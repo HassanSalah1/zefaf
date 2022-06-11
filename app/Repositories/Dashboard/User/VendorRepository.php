@@ -274,9 +274,7 @@ class VendorRepository
                 if ($file){
                     unlink(public_path($user->vendor_images->first()->image));
                 }
-                //dd($file);
                 $user->vendor_images->first()->update(
-                //UserImage::create(
                     [
                     'image' => $image
                 ]);
