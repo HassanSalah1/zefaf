@@ -6,6 +6,7 @@ namespace App\Services\Dashboard\User;
 use App\Repositories\Dashboard\User\VendorRepository;
 use App\Repositories\General\UtilsRepository;
 use App\Repositories\General\ValidationRepository;
+use Illuminate\Validation\Rule;
 
 class VendorService
 {
@@ -42,7 +43,34 @@ class VendorService
         return UtilsRepository::response($response, trans('admin.process_success_message')
             , trans('admin.success_title'));
     }
+    public static function saveEditVendor(array $data)
+    {
+        $rules = [
+            'name' => 'required',
+            'email' => ['required',Rule::unique('users')->ignore($data['id'], 'id')],
+            //'password' => 'required',
+            'image' => 'required',
+            'biography' => 'required',
+            'price_from' => 'required|numeric',
+            'price_to' => 'required|numeric|min:'.$data['price_from'],
+            'category_id' => 'required',
+            'phone' => ['required',Rule::unique('users')->ignore($data['id'], 'id')],
+            'city_id' => 'required',
+        ];
 
+        $messages = [
+            'email.unique' => trans('api.email_unique_error_message'),
+            'phone.unique' => trans('api.phone_unique_error_message'),
+            'price_to.min' => 'Price to must be greater than price from',
+        ];
+        $validated = ValidationRepository::validateWebGeneral($data, $rules, $messages);
+        if ($validated !== true) {
+            return $validated;
+        }
+        $response = VendorRepository::saveEditVendor($data);
+        return UtilsRepository::response($response, trans('admin.process_success_message')
+            , trans('admin.success_title'));
+    }
     public static function changeStatus(array $data)
     {
         $response = VendorRepository::changeStatus($data);

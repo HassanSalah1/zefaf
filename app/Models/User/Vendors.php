@@ -3,6 +3,7 @@
 namespace App\Models\User;
 
 use App\Models\Setting\Category;
+use App\Models\Setting\Membership;
 use Illuminate\Database\Eloquent\Model;
 
 class Vendors extends Model
@@ -22,4 +23,11 @@ class Vendors extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function membership() {
+        return $this->belongsTo(Membership::class);
+    }
 }

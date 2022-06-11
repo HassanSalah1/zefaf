@@ -6,6 +6,7 @@ use App\Entities\UserRoles;
 use App\Entities\UserStatus;
 use App\Models\Permission\Permission;
 use App\Models\Permission\PermissionGroup;
+use App\Models\Setting\City;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -71,6 +72,10 @@ class User extends Authenticatable
     public function vendor()
     {
         return $this->hasOne(Vendors::class);
+    }
+    public function city()
+    {
+        return $this->belongsTo(City::class);
     }
 
     public function reviews()

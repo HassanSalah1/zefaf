@@ -168,6 +168,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'namespace' => 'Dash
 
             Route::get('/vendor/add', 'User\VendorController@showAddVendor');
             Route::post('/vendor/add', 'User\VendorController@saveAddVendor');
+
+            Route::get('/vendor/edit/{vendors}', 'User\VendorController@showEditVendor');
+            Route::post('/vendor/edit/{id}', 'User\VendorController@saveEditVendor');
         });
 
         Route::post('/vendors/get/categories', 'User\VendorController@getSearchCategories');

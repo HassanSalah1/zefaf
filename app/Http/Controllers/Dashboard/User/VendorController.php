@@ -82,6 +82,28 @@ class VendorController extends Controller
         $data['request'] = $request;
         return VendorService::saveAddVendor($data);
     }
+    public function showEditVendor(Request $request, User $vendors)
+    {
+        $data = $request->all();
+        $data['title'] = 'Edit vendor';
+        $data['active'] = 'edit_vendor';
+        $data['user'] = auth()->user();
+        $data['vendor'] = $vendors->load(['vendor', 'vendor.membership', 'vendor.category.category', 'vendor_images']);
+
+        $data['locale'] = App::getLocale();
+        $data['categories'] = Category::where(['category_id' => null, 'is_deleted' => 0])->get();
+        $data['countries'] = Country::where(['is_deleted' => 0])->get();
+        $data['memberships'] = Membership::where(['is_active' => 1])->get();
+        return view('admin.user.edit_vendor')->with($data);
+    }
+
+    public function saveEditVendor(Request $request, $id)
+    {
+        $data = $request->all();
+        $data['request'] = $request;
+        $data['id'] = $id;
+        return VendorService::saveEditVendor($data);
+    }
 
     public function verifyVendor(Request $request)
     {

@@ -16,4 +16,9 @@ class City extends Model
         $column = App::getLocale() == 'en' ? 'name_en' : 'name_ar';
         return $this->$column;
     }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
 }

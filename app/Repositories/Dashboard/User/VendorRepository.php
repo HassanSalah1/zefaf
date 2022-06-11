@@ -90,6 +90,7 @@ class VendorRepository
             })
             ->addColumn('actions', function ($vendorObj) {
                 $ul = '';
+                $ul .= '<a data-toggle="tooltip" title="' . trans('Edit') . '" href="/vendor/edit/' . $vendorObj->id . '" class="on-default edit-row btn btn-warning"><i class="fa fa-edit"></i></a> ';
                 $ul .= '<a data-toggle="tooltip" title="' . trans('admin.details_action') . '" href="/vendor/details/' . $vendorObj->id . '" class="on-default edit-row btn btn-primary"><i class="fa fa-eye"></i></a> ';
                 // block or activate account
                 if ($vendorObj->status === UserStatus::BLOCKED) {
@@ -241,6 +242,71 @@ class VendorRepository
             return true;
         }
         return false;
+    }
+    public static function saveEditVendor(array $data)
+    {
+        $user = User::find($data['id']);
+        if (!$user)
+            return false;
+
+        $userData = [
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'role' => UserRoles::VENDOR,
+            'status' => UserStatus::ACTIVE,
+            'city_id' => $data['city_id'],
+            'lang' => 'en',
+        ];
+        //image
+        if (!empty($data['password'])){
+            $userData['password'] = Hash::make($data['password']);
+        }
+        if (!empty($data['image'])){
+            $file_id = 'IMG_' . mt_rand(00000, 99999) . (time() + mt_rand(00000, 99999));
+            $image_name = 'image';
+            $image_path = 'uploads/vendors/';
+            $image = UtilsRepository::createImage($data['request'], $image_name, $image_path, $file_id, true);
+            if ($image === false) {
+                unset($image);
+            }else{
+                $file = file_exists(public_path($user->vendor_images->first()->image));
+                if ($file){
+                    unlink(public_path($user->vendor_images->first()->image));
+                }
+                //dd($file);
+                $user->vendor_images->first()->update(
+                //UserImage::create(
+                    [
+                    'image' => $image
+                ]);
+            }
+        }
+
+        $user->update($userData);
+
+
+            $membership = null;
+            if (isset($data['membership_id'])) {
+                $membership = Membership::find($data['membership_id']);
+                if ($membership && $membership->type === MembershipType::FREE) {
+//                    $data['duration'] = $membership->duration;
+                    $data['duration'] = $data['free_duration'];
+                }
+            }
+            $vendorData = [
+                'biography' => $data['biography'],
+                'category_id' => $data['category_id'],
+                'from_price' => $data['price_from'],
+                'to_price' => $data['price_to'],
+                'membership_id' => $membership ? $membership->id : null,
+                'membership_duration' => $data['duration'],
+                'membership_date' => $membership ? date('Y-m-d') : null,
+                'category_questions' => null
+            ];
+            $user->vendor()->update($vendorData);
+
+            return true;
     }
 
     public static function getVendorPackagesData(array $data)
