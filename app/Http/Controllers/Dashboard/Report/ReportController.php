@@ -115,7 +115,7 @@ class ReportController extends Controller
     }
     public function showWeddingReport()
     {
-        $data['title'] = 'Rating Reports';
+        $data['title'] = 'Wedding Reports';
         $data['user'] = auth()->user();
         $data['locale'] = App::getLocale();
         $data['active'] = 'wedding';
