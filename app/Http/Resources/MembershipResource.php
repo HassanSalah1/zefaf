@@ -17,13 +17,13 @@ class MembershipResource extends JsonResource
     {
 
         $duration = $this->duration;
-//        $user = auth()->user();
-//        if($user){
-//            $vendor = Vendors::where(['user_id' => $user->id])->first();
-//            if($vendor) {
-//                $duration = $vendor->membership_duration !== null ? $vendor->membership_duration / 30 : null;
-//            }
-//        }
+        $user = auth()->user();
+        if($user){
+            $vendor = Vendors::where(['user_id' => $user->id])->first();
+            if($vendor) {
+                $duration = $vendor->membership_duration !== null ? $vendor->membership_duration / 30 : null;
+            }
+        }
 
         return [
             'id' => $this->id,

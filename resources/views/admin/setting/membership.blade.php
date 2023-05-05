@@ -76,7 +76,7 @@
         </div> <!-- form-group -->
     </div>
 
-    <div class="row">
+    <div class="row" id="duration-div">
         <div class="form-group col-sm-6">
             <label class="control-label"
                    for="duration">{{trans('admin.duration')}}</label>
