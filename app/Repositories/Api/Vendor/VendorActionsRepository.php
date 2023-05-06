@@ -390,7 +390,8 @@ class VendorActionsRepository
             if ($discount > 0) {
                 $discount = $package->price * ($discount / 100);
             }
-            $price = ($package->price - $discount) * $data['duration'];
+            //$price = ($package->price - $discount) * $data['duration'];
+            $price = $package->price;
             $auth = PayMob::authPaymob();
             //
             $orderID = auth()->user()->id . 'A' . $package->id . 'A' .
