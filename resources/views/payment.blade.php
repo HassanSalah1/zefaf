@@ -15,8 +15,6 @@
 </head>
 <body>
 
-<iframe
-    src="https://accept.paymobsolutions.com/api/acceptance/iframes/{{config('paymob.iframe_id')}}?payment_token={{$token}}">
-</iframe>
+<iframe src="https://accept.paymobsolutions.com/api/acceptance/iframes/{{config('paymob.iframe_id')}}?payment_token={{$token}}"></iframe>
 </body>
 </html>
