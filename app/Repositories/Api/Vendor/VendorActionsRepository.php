@@ -24,6 +24,7 @@ use App\Models\User\Vendors;
 use App\Repositories\General\UtilsRepository;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use PayMob;
 
 class VendorActionsRepository
@@ -431,6 +432,7 @@ class VendorActionsRepository
 
     public static function post_pay(array $data)
     {
+        Log::warning(json_encode($data));
         if (isset($data['success']) && $data['success'] === "true"
             && isset($data['merchant_order_id']) && !empty($data['merchant_order_id'])) {
             $merchant_order_id = explode('A', $data['merchant_order_id']);
