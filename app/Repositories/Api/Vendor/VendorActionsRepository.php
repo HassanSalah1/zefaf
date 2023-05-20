@@ -439,7 +439,7 @@ class VendorActionsRepository
                 if ($vendor) {
                     $vendor->update([
                         'membership_id' => $merchant_order_id[1],
-                        'membership_duration' => intval($merchant_order_id[2]) * 30,
+                        'membership_duration' => intval($merchant_order_id[2]),
                         'membership_date' => date('Y-m-d')
                     ]);
                     return view('payment_success');
