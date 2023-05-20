@@ -433,15 +433,17 @@ class VendorActionsRepository
     public static function post_pay(array $data)
     {
         Log::warning(json_encode($data));
-        if (isset($data['success']) && $data['success'] === "true"
-            && isset($data['merchant_order_id']) && !empty($data['merchant_order_id'])) {
+        if (isset($data['success']) && $data['success'] === "true" && isset($data['merchant_order_id']) && !empty($data['merchant_order_id'])) {
+
             $merchant_order_id = explode('A', $data['merchant_order_id']);
             if (count($merchant_order_id) >= 3) {
-                $vendor = Vendors::where(['user_id' => $merchant_order_id[0]])->first();
+                $user_id = $merchant_order_id[0];
+                $vendor = Vendors::where(['user_id' => $user_id])->first();
                 if ($vendor) {
+
                     $vendor->update([
                         'membership_id' => $merchant_order_id[1],
-                        'membership_duration' => intval($merchant_order_id[2]) * 30,
+                        'membership_duration' => $vendor->membership->duration,//intval($merchant_order_id[2]) * 30,
                         'membership_date' => date('Y-m-d')
                     ]);
                     return view('payment_success');
