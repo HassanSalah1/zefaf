@@ -141,7 +141,7 @@ class UtilsRepository
     public static function sendEmail($data)
     {
         try {
-            $email = 'support@zefaf.com';
+            $email = 'support@zefaf.net';
             $data['from'] = $email;
             $data['lang'] = App::getLocale();
             Mail::send($data['template'], ['data' => $data,], function ($message) use ($data, $email) {
@@ -151,6 +151,7 @@ class UtilsRepository
                 $message->subject($data['subject']);
             });
         } catch (\Exception $ex) {
+            dd($ex);
         }
     }
 

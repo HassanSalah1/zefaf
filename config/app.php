@@ -172,8 +172,8 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
 
-        BaklySystems\PayMob\PayMobServiceProvider::class,
-        Ladumor\OneSignal\OneSignalServiceProvider::class,
+        //BaklySystems\PayMob\PayMobServiceProvider::class,
+        //Ladumor\OneSignal\OneSignalServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -242,8 +242,8 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
 
-        'PayMob' => BaklySystems\PayMob\Facades\PayMob::class,
-        'OneSignal' => \Ladumor\OneSignal\OneSignal::class
+        //'PayMob' => BaklySystems\PayMob\Facades\PayMob::class,
+        //'OneSignal' => \Ladumor\OneSignal\OneSignal::class
 
     ],
 

@@ -422,6 +422,7 @@ class AuthApiRepository
             $data = [
                 'subject' => $subject,
                 'user' => $user,
+                'code' => $code,
                 'template' => $template,
                 'verificationCode' => $verificationCode,
                 'email' => $email
