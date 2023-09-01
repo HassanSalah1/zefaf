@@ -459,7 +459,7 @@ class VendorActionsRepository
         $file_id = 'IMG_' . mt_rand(00000, 99999) . (time() + mt_rand(00000, 99999));
         $image_name = 'image';
         $image_path = 'uploads/users/';
-        $userData['image'] = UtilsRepository::createImageFormBase64($data['request'], $image_name, $image_path, $file_id, true);
+        $userData['image'] = UtilsRepository::createImageFormBase64($data['request'], $image_name, $image_path, $file_id, false);
 
         if ($userData['image'] === false) {
             return [
