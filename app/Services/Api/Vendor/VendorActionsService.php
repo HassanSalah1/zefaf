@@ -109,15 +109,20 @@ class VendorActionsService
 
     public static function renewPackage(array $data)
     {
+
         $keys = [
             'package_id' => 'required',
             'duration' => 'required',
+            'type'=>'required|in:cart,wallet'
         ];
 
         $validated = ValidationRepository::validateAPIGeneral($data, $keys);
+
+
         if ($validated !== true) {
             return $validated;
         }
+
         $response = VendorActionsRepository::renewPackage($data);
         return UtilsRepository::handleResponseApi($response);
     }

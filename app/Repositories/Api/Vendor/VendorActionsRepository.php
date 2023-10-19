@@ -22,6 +22,7 @@ use App\Models\User\Statistics;
 use App\Models\User\UserImage;
 use App\Models\User\Vendors;
 use App\Repositories\General\UtilsRepository;
+use GuzzleHttp\RequestOptions;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -412,7 +413,7 @@ class VendorActionsRepository
                     $price * 100, // total amount by cents/piasters.
                     $paymobOrder->id // paymob order id from step 2.
                 );
-                if ($paymentKey && isset($paymentKey->token)) {
+                if ($paymentKey && isset($paymentKey->token) && request()->type == 'cart') {
                     return [
                         'data' => [
                             'link' => url('/api/v1/handle/payment') . '?key='
@@ -421,6 +422,44 @@ class VendorActionsRepository
                         'message' => 'success',
                         'code' => HttpCode::SUCCESS
                     ];
+                }elseif($paymentKey && isset($paymentKey->token) && request()->type == 'wallet'){
+                    $client = new \GuzzleHttp\Client();
+
+                    $payLoad=[
+                        'source'=> [
+                        "identifier"=>auth()->user()->phone,
+                        "subtype"=>"WALLET",
+                    ],
+                    "payment_token"=> $paymentKey->token];
+
+                    $URI = 'https://accept.paymob.com/api/acceptance/payments/pay';
+
+                    $response = $client->post(
+                        $URI,
+                        [
+                            RequestOptions::JSON =>
+                            $payLoad
+                        ],
+                        ['Content-Type' => 'application/json']
+                    );
+
+                    $responseJSON = json_decode($response->getBody(), true);
+
+                    if(isset($responseJSON['pending']) && isset($responseJSON['success']) && $responseJSON['pending'] == "true"){
+                            return [
+                                'data' => [
+                                    'link' => url('/api/v1/handle/payment_wallet') .'?iframe='
+                                        .$responseJSON['iframe_redirection_url']
+                                ],
+                                'message' => 'success',
+                                'code' => HttpCode::SUCCESS
+                            ];
+                    }else{
+                        return [
+                            'message' => 'error,mobile not valid or something worng',
+                            'code' => HttpCode::ERROR
+                        ];
+                    }
                 }
             }
         }
@@ -433,6 +472,7 @@ class VendorActionsRepository
     public static function post_pay(array $data)
     {
         Log::warning(json_encode($data));
+
         if (isset($data['success']) && $data['success'] === "true" && isset($data['merchant_order_id']) && !empty($data['merchant_order_id'])) {
 
             $merchant_order_id = explode('A', $data['merchant_order_id']);

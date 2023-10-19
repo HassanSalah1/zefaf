@@ -96,6 +96,15 @@ class VendorActionsController extends Controller
         }
     }
 
+
+    public function handlePaymentWallet(Request $request)
+    {
+        if ($request->has('iframe')) {
+            $data['iframe'] = $request->iframe;
+            return view('payment_wallet')->with($data);
+        }
+    }
+
     public function post_pay(Request $request)
     {
         $data = $request->all();
