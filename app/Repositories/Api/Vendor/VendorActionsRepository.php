@@ -480,7 +480,7 @@ class VendorActionsRepository
             if (count($merchant_order_id) >= 3) {
                 $user_id = $merchant_order_id[0];
                 $vendor = Vendors::where(['user_id' => $user_id])->first();
-                $membership = Membership::where('id',$merchant_order_id[0])->first();
+                $membership = Membership::where('id',$merchant_order_id[1])->first();
 
                 if ($vendor) {
 
