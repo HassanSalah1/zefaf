@@ -387,6 +387,7 @@ class VendorActionsRepository
     public static function renewPackage(array $data)
     {
         $package = Membership::where(['id' => $data['package_id']])->first();
+
         if ($package && $package->type !== MembershipType::FREE) {
             $discount = ($package->discount ? $package->discount : 0);
             if ($discount > 0) {
@@ -396,7 +397,7 @@ class VendorActionsRepository
             $price = $package->price;
             $auth = PayMob::authPaymob();
             //
-            $orderID = auth()->user()->id . 'A' . $package->id . 'A' .
+            $orderID = auth()->user()->++ . 'A' . $package->id . 'A' .
                 $data['duration'] . 'A' .
                 strtotime(date('Y-m-d')) . UtilsRepository::createVerificationCode($package->id, 5);
             //
@@ -479,11 +480,13 @@ class VendorActionsRepository
             if (count($merchant_order_id) >= 3) {
                 $user_id = $merchant_order_id[0];
                 $vendor = Vendors::where(['user_id' => $user_id])->first();
+                $membership = Membership::where('id',$merchant_order_id[0])->first();
+
                 if ($vendor) {
 
                     $vendor->update([
                         'membership_id' => $merchant_order_id[1],
-                        'membership_duration' => $vendor->membership->duration,//intval($merchant_order_id[2]) * 30,
+                        'membership_duration' => $membership->duration,//intval($merchant_order_id[2]) * 30,
                         'membership_date' => date('Y-m-d')
                     ]);
                     return view('payment_success');
