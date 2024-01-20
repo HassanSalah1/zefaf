@@ -479,11 +479,13 @@ class VendorActionsRepository
             if (count($merchant_order_id) >= 3) {
                 $user_id = $merchant_order_id[0];
                 $vendor = Vendors::where(['user_id' => $user_id])->first();
+                $membership = Membership::where('id',$merchant_order_id[0])->first();
+
                 if ($vendor) {
 
                     $vendor->update([
                         'membership_id' => $merchant_order_id[1],
-                        'membership_duration' => $vendor->membership->duration,//intval($merchant_order_id[2]) * 30,
+                        'membership_duration' => $membership->duration,//intval($merchant_order_id[2]) * 30,
                         'membership_date' => date('Y-m-d')
                     ]);
                     return view('payment_success');
