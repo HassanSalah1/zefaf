@@ -30,7 +30,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+
+        config(['paymob.integration_id' => request()->type == 'cart' || !isset(request()->type) ? '433688':'3823497']);
+
         Schema::defaultStringLength(191);
 
         date_default_timezone_set('Africa/Cairo');

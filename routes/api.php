@@ -28,6 +28,7 @@ Route::group(['middleware' => 'cors' ], function () {
             Route::post('/auth/facebook', 'Auth\AuthController@authFacebook'); // auth facebook
 
             Route::post('/login', 'Auth\AuthController@login'); // login user
+            // Route::get('/test-wallet', 'Vendor\VendorActionsController@testWallet'); // login user
 
             Route::post('/categories/click', 'Client\ActionController@clickCategories'); // login user
 
@@ -106,6 +107,7 @@ Route::group(['middleware' => 'cors' ], function () {
 
 
             Route::get('/handle/payment', 'Vendor\VendorActionsController@handlePayment');
+            Route::get('/handle/payment_wallet', 'Vendor\VendorActionsController@handlePaymentWallet');
             Route::get('/acceptance/post_pay', 'Vendor\VendorActionsController@post_pay');
             Route::get('/payment_error', 'Vendor\VendorActionsController@payment_error');
         });
