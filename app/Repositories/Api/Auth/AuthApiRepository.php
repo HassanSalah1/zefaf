@@ -113,7 +113,8 @@ class AuthApiRepository
                 return [
                     'data' => $user,
                     'message' => trans('api.create_account_success_message'),
-                    'code' => HttpCode::SUCCESS
+                    'code' => HttpCode::SUCCESS,
+
                 ];
             }
         }
@@ -168,7 +169,7 @@ class AuthApiRepository
             }
             $user->vendor = $vendorData;
         }
-
+        $user['app_review'] = true;
         return $user;
     }
 
